@@ -255,7 +255,7 @@ def post_message(request, pk):
     if error_response:
         return error_response
 
-    form = MessageForm(request.POST)
+    form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
         return JsonResponse({'error': 'Mensagem inválida.'}, status=400)
 
