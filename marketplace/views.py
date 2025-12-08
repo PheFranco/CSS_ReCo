@@ -234,7 +234,9 @@ def messages_json(request, pk):
         {
             'id': msg.id,
             'sender': msg.sender.get_full_name() or msg.sender.get_username(),
+            'sender_id': msg.sender.id,
             'text': msg.text,
+            'image': msg.image.url if msg.image else None,
             'created_at': msg.created_at.isoformat(),
         }
         for msg in qs

@@ -29,7 +29,17 @@ class DonationForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['text']
+        fields = ['text', 'image']
+        labels = {
+            'text': 'Mensagem',
+            'image': 'Imagem (opcional)',
+        }
         widgets = {
-            'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Escreva sua mensagem...'}),
+            'text': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Escreva sua mensagem...',
+                'id': 'message-input'
+            }),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
         }

@@ -30,6 +30,7 @@ class Message(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_messages')
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_messages')
     text = models.TextField()
+    image = models.ImageField(upload_to='messages/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
 
