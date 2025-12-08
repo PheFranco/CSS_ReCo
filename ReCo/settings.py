@@ -193,15 +193,17 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Email Configuration
 # https://docs.djangoproject.com/en/5.2/topics/email/
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Desenvolvimento
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Produção
 
-# Em produção, configure com seu provedor de email:
-# EMAIL_HOST = 'smtp.gmail.com'  # ou outro provedor
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'seu-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'sua-senha-app'
-# DEFAULT_FROM_EMAIL = 'seu-email@gmail.com'
-
-# Para desenvolvimento local, emails serão exibidos no console
+# Usar console para desenvolvimento, SMTP para produção
+if os.environ.get('USE_SQLITE'):
+    # Desenvolvimento - emails no console
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Produção - usar SMTP
+    EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@recco.com')
