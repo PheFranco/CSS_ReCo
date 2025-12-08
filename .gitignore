@@ -10,6 +10,11 @@ db.sqlite3
 media/
 staticfiles/
 
+# Environment
+.env
+.env.local
+.env.*.local
+
 # Editor
 .vscode/
 .idea/
@@ -23,3 +28,4 @@ staticfiles/
 # Node
 node_modules/
 dist/
+
