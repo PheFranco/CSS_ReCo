@@ -148,7 +148,6 @@
         const chatBox = document.getElementById('chat-box');
         const form = document.getElementById('msg-form');
         const attachBtn = document.getElementById('attach-btn');
-        const imageInput = form.querySelector('input[type="file"]');
         
         if (!chatBox || !form) return;
         
@@ -161,6 +160,7 @@
 
         const emptyText = chatBox.dataset.emptyText || '';
         const textarea = form.querySelector('textarea');
+        const imageInput = form.querySelector('input[type="file"]');
 
         function escapeHtml(text) {
           return text
@@ -221,14 +221,14 @@
 
         form.addEventListener('submit', async function (event) {
           event.preventDefault();
-          const formData = new FormData(form);
           const text = textarea.value.trim();
           
-          if (!text && !imageInput.files.length) {
-            alert('Escreva uma mensagem ou anexe uma imagem.');
+          if (!text) {
+            alert('Escreva uma mensagem.');
             return;
           }
 
+          const formData = new FormData(form);
           try {
             const res = await fetch(postUrl, {
               method: 'POST',
@@ -237,10 +237,14 @@
             });
             if (res.ok) {
               textarea.value = '';
-              imageInput.value = '';
+              if (imageInput) {
+                imageInput.value = '';
+              }
               loadMessages();
             } else {
-              alert('Erro ao enviar mensagem.');
+              const errorData = await res.json().catch(() => ({}));
+              alert('Erro ao enviar mensagem: ' + (errorData.error || 'Erro desconhecido'));
+              console.error('Erro na resposta:', errorData);
             }
           } catch (err) {
             console.error(err);

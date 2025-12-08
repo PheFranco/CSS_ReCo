@@ -257,7 +257,9 @@ def post_message(request, pk):
 
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
-        return JsonResponse({'error': 'Mensagem inválida.'}, status=400)
+        # Retornar erros de validação para debug
+        errors = ', '.join([f"{field}: {error[0]}" for field, error in form.errors.items()])
+        return JsonResponse({'error': f'Mensagem inválida. {errors}'}, status=400)
 
     message = form.save(commit=False)
     message.donation = donation

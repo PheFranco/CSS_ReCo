@@ -39,7 +39,18 @@ class MessageForm(forms.ModelForm):
                 'class': 'form-control', 
                 'rows': 3, 
                 'placeholder': 'Escreva sua mensagem...',
-                'id': 'message-input'
+                'id': 'message-input',
+                'required': 'required'
             }),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
         }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        text = cleaned_data.get('text', '').strip()
+        
+        # Validar que o texto não está vazio
+        if not text:
+            raise forms.ValidationError('A mensagem não pode estar vazia.')
+        
+        return cleaned_data
