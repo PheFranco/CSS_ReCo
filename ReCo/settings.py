@@ -12,9 +12,22 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Carregar variáveis de ambiente do arquivo .env
+# Prioridade: .env.local > .env
+env_local_path = BASE_DIR / '.env.local'
+env_path = BASE_DIR / '.env'
+
+if env_local_path.exists():
+    load_dotenv(env_local_path)
+elif env_path.exists():
+    load_dotenv(env_path)
+else:
+    load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -22,12 +35,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7&f2v&)o0c8v7tyd)o83)0zq$0p6(vnse9@df46x0nd9b&t1(t'
-
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DJANGO_DEBUG', default=0))
 
 # Desenvolvimento: liberar hosts/origens usadas pelo browser/preview
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]  # remover "*" em produção
+ALLOWED_HOSTS = str(os.environ.get('DJANGO_ALLOWED_HOSTS')).split(',')  # remover "*" em produção
 
 # Se você acessar via forwarded URL (ex.: https://123-45-67-89.preview.app)
 # adicione a origem completa com esquema:
@@ -52,7 +65,7 @@ INSTALLED_APPS = [
     'perfil',
     'marketplace',
 ]
-            
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,12 +100,25 @@ WSGI_APPLICATION = 'ReCo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Usar SQLite em desenvolvimento, MySQL em produção
+if os.environ.get('USE_SQLITE'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            "ENGINE": 'django.db.backends.mysql',
+            'NAME': os.environ.get('DJANGO_DB_NAME', ''),
+            "USER" : os.environ.get('DJANGO_DB_USER', ''),
+            "PASSWORD" : os.environ.get('DJANGO_DB_PASSWORD', ''),
+            "HOST" : os.environ.get('DJANGO_DB_HOST', ''),
+            "PORT" : os.environ.get('DJANGO_DB_PORT', '3306'),
+        }
+    }
 
 
 # Password validation
