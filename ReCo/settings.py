@@ -101,7 +101,9 @@ WSGI_APPLICATION = 'ReCo.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # Usar SQLite em desenvolvimento, MySQL em produção
-if os.environ.get('USE_SQLITE'):
+use_sqlite = os.environ.get('USE_SQLITE', '').lower() in ('1', 'true', 'yes')
+
+if use_sqlite:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -109,16 +111,32 @@ if os.environ.get('USE_SQLITE'):
         }
     }
 else:
-    DATABASES = {
-        'default': {
-            "ENGINE": 'django.db.backends.mysql',
-            'NAME': os.environ.get('DJANGO_DB_NAME', ''),
-            "USER" : os.environ.get('DJANGO_DB_USER', ''),
-            "PASSWORD" : os.environ.get('DJANGO_DB_PASSWORD', ''),
-            "HOST" : os.environ.get('DJANGO_DB_HOST', ''),
-            "PORT" : os.environ.get('DJANGO_DB_PORT', '3306'),
+    # MySQL em produção - validar variáveis obrigatórias
+    db_host = os.environ.get('DJANGO_DB_HOST')
+    db_name = os.environ.get('DJANGO_DB_NAME')
+    db_user = os.environ.get('DJANGO_DB_USER')
+    db_password = os.environ.get('DJANGO_DB_PASSWORD')
+    
+    if not all([db_host, db_name, db_user, db_password]):
+        # Se variáveis estão faltando, usar SQLite como fallback
+        print("⚠ Variáveis de banco MySQL não configuradas. Usando SQLite como fallback.")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                "ENGINE": 'django.db.backends.mysql',
+                'NAME': db_name,
+                "USER": db_user,
+                "PASSWORD": db_password,
+                "HOST": db_host,
+                "PORT": os.environ.get('DJANGO_DB_PORT', '3306'),
+            }
+        }
 
 
 # Password validation
@@ -172,3 +190,18 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Email Configuration
+# https://docs.djangoproject.com/en/5.2/topics/email/
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Desenvolvimento
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Produção
+
+# Em produção, configure com seu provedor de email:
+# EMAIL_HOST = 'smtp.gmail.com'  # ou outro provedor
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'seu-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'sua-senha-app'
+# DEFAULT_FROM_EMAIL = 'seu-email@gmail.com'
+
+# Para desenvolvimento local, emails serão exibidos no console
