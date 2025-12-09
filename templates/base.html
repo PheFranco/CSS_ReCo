@@ -35,8 +35,8 @@
             </div>
           </div>
         {% else %}
-          <a class="btn btn-outline-light btn-sm" href="{% url 'usuario:login' %}">Entrar</a>
-          <a class="btn btn-light btn-sm" href="{% url 'usuario:register' %}">Criar conta</a>
+          <a class="btn btn-primary btn-sm" href="{% url 'usuario:login' %}" style="background: linear-gradient(135deg, #D96704, #D9933D); border: none; color: #fff; font-weight: 600; box-shadow: 0 4px 10px rgba(217, 103, 4, 0.3);">Entrar</a>
+          <a class="btn btn-outline-primary btn-sm" href="{% url 'usuario:register' %}" style="border: 2px solid #D96704; color: #D96704; background: transparent; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='rgba(217, 103, 4, 0.1)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.transform='translateY(0)';">Criar conta</a>
         {% endif %}
       </div>
     </div>
