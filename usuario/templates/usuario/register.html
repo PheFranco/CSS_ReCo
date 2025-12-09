@@ -5,8 +5,8 @@
 {% block content %}
   <div class="container">
     <section class="form-card">
-      <h1 class="h3 mb-3">Crie sua conta</h1>
-      <p class="text-muted">Preencha os dados principais para publicar doações ou solicitar itens. Leva menos de 2 minutos.</p>
+      <h1 class="h3 mb-3" style="text-align: center;">Crie sua conta</h1>
+      <p class="text-muted" style="text-align: center;">Preencha os dados principais para publicar doações ou solicitar itens. Leva menos de 2 minutos.</p>
 
       <form method="post" action="{% url 'usuario:register' %}" class="mt-4">
         {% csrf_token %}
