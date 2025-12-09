@@ -137,13 +137,47 @@ a { color: inherit; text-decoration: none; transition: 0.3s ease; }
 .section-card h3 { color: var(--burnt); margin-top: 0; }
 
 .hero-banner {
-  background: linear-gradient(135deg, var(--burnt), var(--brand)) !important;
+  position: relative;
   color: #fff;
   border-radius: 0;
   padding: 3.5rem;
   box-shadow: none;
   margin: 0;
   margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/hero-reco.png');
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 1;
+  z-index: 1;
+}
+
+.hero-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(217, 103, 4, 0.95), rgba(242, 183, 5, 0.85));
+  z-index: 0;
+}
+
+.hero-banner h1,
+.hero-banner p,
+.hero-banner .cta-group {
+  position: relative;
+  z-index: 2;
 }
 .hero-banner h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; font-weight: 800; }
 .hero-banner p { font-size: 1.15rem; max-width: 640px; }
