@@ -186,7 +186,26 @@ a { color: inherit; text-decoration: none; transition: 0.3s ease; }
   gap: 1.5rem;
   margin-bottom: 4rem;
 }
-.card-grid .section-card { margin-top: 0; height: 100%; }
+.card-grid .section-card { 
+  margin-top: 0; 
+  height: 100%;
+  transition: all 0.6s ease;
+}
+.card-grid .section-card:hover {
+  animation: slideInLeft 1s ease-out forwards;
+  transform: translateY(-10px);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 /* ================= 7. DOAÇÕES (CARD E IMAGEM) ================= */
 .donation-card {
