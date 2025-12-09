@@ -24,15 +24,20 @@
           {{ form.password }}
         </div>
 
-        <button class="btn btn-primary w-100" type="submit">Entrar</button>
+        <button class="btn btn-primary w-100" type="submit" style="font-size: 1rem; padding: 0.75rem 1.5rem; font-weight: 700; box-shadow: 0 6px 20px rgba(217, 103, 4, 0.35); transition: all 0.3s ease;">Entrar na conta</button>
       </form>
 
-      <p class="text-center mt-3 mb-0">
-        Ainda não tem conta? <a href="{% url 'usuario:register' %}">Cadastre-se agora</a>.
-      </p>
+      <hr class="my-4" style="border-color: rgba(46, 31, 21, 0.15);">
+
+      <div class="text-center">
+        <p class="mb-3">
+          Ainda não tem conta? 
+          <a href="{% url 'usuario:register' %}" class="btn btn-outline-primary" style="display: inline-block; margin-top: 0.5rem; padding: 0.6rem 1.5rem; border: 2px solid #D96704; color: #D96704; border-radius: 50px; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='rgba(217, 103, 4, 0.1)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.backgroundColor='transparent'; this.style.transform='translateY(0)';">Criar nova conta</a>
+        </p>
+      </div>
       
-      <p class="text-center mt-2">
-        <a href="{% url 'usuario:password_reset' %}">Esqueci minha senha</a>
+      <p class="text-center mt-3 text-muted">
+        <a href="{% url 'usuario:password_reset' %}" style="color: #8C5E35; text-decoration: underline; font-weight: 500;">Esqueci minha senha</a>
       </p>
     </section>
   </div>
